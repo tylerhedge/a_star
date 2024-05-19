@@ -3,6 +3,7 @@
 #include "Viz_Graph.h"
 #include <vector>
 #include "plotter.h"
+#include "prioQueue.h"
 using std::cout, std::endl, std::unordered_map, std::vector;
 
 int main() {

@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <vector>
 #include <functional>
-#include "priorityQueue.h"
+#include "prioQueue.h"
 using std::unordered_map, std::vector;
 template<typename NodeType>
 class A_star {
@@ -33,8 +33,7 @@ class A_star {
 
         vector<NodeType*> search(NodeType* start, NodeType* goal) {
             vector<NodeType*> path;
-            PriorityQueue<NodeType*, float> open_set;
-            open_set.put(start, 0);
+            PrioQueue<NodeType*, double> open_set;
 
             unordered_map<NodeType*, NodeType*> came_from;
             unordered_map<NodeType*, double> gScore; //cost of cheapest path from start to node
@@ -42,6 +41,8 @@ class A_star {
 
             unordered_map<NodeType*, double> fScore; //estimated cost of the path through node from start to goal
             fScore[start] = heuristic(start, goal);
+            open_set.put(start, fScore[start]);
+
 
             while(!open_set.empty()) {
                 NodeType* curr = open_set.get();
@@ -60,7 +61,7 @@ class A_star {
                         came_from[*it] = curr;
                         gScore[*it] = tentative_gScore;
                         fScore[*it] = tentative_gScore + heuristic(*it, goal);
-                        open_set.put(*it, fScore[*it]); //may need to check if open set contains *it
+                        open_set.put(*it, fScore[*it]);
                     }
                 }
             }
