@@ -32,6 +32,7 @@ class A_star {
         }
 
         vector<NodeType*> search(NodeType* start, NodeType* goal) {
+            vector<NodeType*> path;
             PriorityQueue<NodeType*, float> open_set;
             open_set.put(start, 0);
 
@@ -45,7 +46,6 @@ class A_star {
             while(!open_set.empty()) {
                 NodeType* curr = open_set.get();
                 if (curr == goal) {
-                    vector<NodeType*> path;
                     path.push_back(curr);
                     while (came_from.find(curr) != came_from.end()) {
                         curr = came_from[curr];
@@ -64,6 +64,7 @@ class A_star {
                     }
                 }
             }
+            return path;
         }
 };
 
