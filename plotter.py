@@ -12,7 +12,7 @@ goalY = goalLine[1]
 plt.plot(float(startX), float(startY), "g^", markersize=20)
 plt.plot(float(goalX), float(goalY), "y*", markersize=20)
 
-line = f.readline()
+line = f.readline() 
 while line.strip() != "PATH":
     line = line.split()
     x = []
@@ -24,8 +24,8 @@ while line.strip() != "PATH":
     y.append(y[0])
     plt.plot(x, y, 'b')
     
-    #plt.xlim(0, 7)
-    #plt.ylim(0, 7)
+    plt.xlim(0, 12)
+    plt.ylim(0, 12)
     line = f.readline()
 
 x = []
