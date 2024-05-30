@@ -74,26 +74,55 @@ bool hasLOS(Point a, Point b, const vector<vector<Point>>& polygons) {
         //iterate through all polygons, it is an iterator to a vector of vectors of points, *it is a vector of points
 
         //make consecutive points neighbors NOTE DOES NOT CHECK NON-CONSECUTIVE POINTS, CONCAVE POLYGONS WILL NOT WORK CORRECTLY
+        auto ptbefore = it->end();
+        auto ptAfter = it->begin();
+        ptAfter++;
         for (auto jt = it->begin(); jt != it->end(); jt++) {
-            //iterate through individual polygon, jt is an iterator to a vector of points, *jt is a point
-            auto next = jt+1; //next point
-            if (next == it->end()) { //if last point
-                neighbors[&*jt].push_back(&*(it->begin())); //address of first point
-                neighbors[&*(it->begin())].push_back(&*jt);
+            // //iterate through individual polygon, jt is an iterator to a vector of points, *jt is a point
+            // auto next = jt+1; //next point
+            // if (next == it->end()) { //if last point
+            //     neighbors[&*jt].push_back(&*(it->begin())); //address of first point
+            //     neighbors[&*(it->begin())].push_back(&*jt);
+            // }
+
+            // //not the end
+            // else {
+            //     neighbors[&*jt].push_back(&*next);
+            //     neighbors[&*next].push_back(&*jt);
+            // }
+            Point p1;
+            Point p2;
+            if (ptbefore == it->end()) {
+                p1 = it->back();
+                ptbefore = it->begin();
+            }
+            else {
+                p1 = *ptbefore;
+                ptbefore++;
             }
 
-            //not the end
+            if (ptAfter == it->end()) {
+                p2 = it->front();
+            }
             else {
-                neighbors[&*jt].push_back(&*next);
-                neighbors[&*next].push_back(&*jt);
+                p2 = *ptAfter;
+            }
+            vector<vector<Point>> polygons_new = polygons;
+            polygons_new.push_back({p1, p2});
+            for (auto xt = it->begin(); xt != it->end(); xt++) {
+                if (xt == jt) continue;
+                if (hasLOS(*jt, *xt, polygons)) {
+                    neighbors[&*jt].push_back(&*xt);
+                    neighbors[&*xt].push_back(&*jt);
+                }
             }
 
             // add points on other polygons, LOS is two way so dont have to double check polygons so start at it not begin
-            for (auto xt = it+1; xt != polygons.end(); xt++) {
-                for (auto yt = xt->begin(); yt != xt->end(); yt++) {
-                    if (hasLOS(*jt, *yt, polygons)) {
-                        neighbors[&*jt].push_back(&*yt);
-                        neighbors[&*yt].push_back(&*jt);
+            for (auto yt = it+1; yt != polygons.end(); yt++) {
+                for (auto zt = yt->begin(); zt != yt->end(); zt++) {
+                    if (hasLOS(*jt, *zt, polygons)) {
+                        neighbors[&*jt].push_back(&*zt);
+                        neighbors[&*zt].push_back(&*jt);
                     }
                 }
             }

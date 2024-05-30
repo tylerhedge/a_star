@@ -17,4 +17,5 @@ class VizGraph {
 
 VizGraph constructVizGraph(vector<vector<Point>>& polygons);
 bool hasLOS(Point a, Point b, const vector<vector<Point>>& polygons);
+bool withinRange(vector<Point> line, vector<Point> upper, vector<Point> lower);
 
